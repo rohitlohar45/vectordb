@@ -178,6 +178,36 @@ See `examples/test/test_vectordb.go` for a focused test script that demonstrates
 
 See `examples/simple/example.go` for a quick start example.
 
+## My TODO: Stuff I Wanna Improve in VectorDB
+
+### 1. Make It Faster & Less Laggy
+- [ ] **Fix that slow startup**: Right now it loads everything into memory at boot, which sucks for big datasets. I need lazy loading or incremental stuff, maybe memory-mapped files and some caching.
+- [ ] **Speed up distance calcs**: Cosine similarity is too slow for high dims. Gonna try SIMD with gonum/blas, pre-normalize vectors, and add options for different metrics like L2.
+- [ ] **Add caching and better indexes**: LRU cache for searches, and new index types like IVF or PQ to make searches way faster without losing accuracy.
+- [ ] **Async everything**: Use goroutines to batch inserts/updates in the background, so it doesn't block the main thread.
+
+### 2. Add Cool Features
+- [ ] **Better metadata filtering**: Make it handle complex queries, like ranges or fuzzy matches on metadata. Stuff like "type:image AND lang:en" would be awesome.
+- [ ] **Hybrid search**: Mix vector similarity with metadata scoring for more flexible results, maybe with weights.
+- [ ] **Go distributed**: Sharding by namespace and some basic replication with Raft, so it can scale to multiple nodes.
+- [ ] **API upgrades**: Batch ops, vector compression, and interfaces for plugging in custom embeddings.
+
+### 3. Clean Up the Code & Test It
+- [ ] **More tests and benchmarks**: Get to 100% coverage, add integration tests, and benchmark latency on different sizes – wanna see those numbers drop.
+- [ ] **Better errors and monitoring**: Ditch basic logs for zap, add Prometheus metrics and OpenTelemetry tracing, maybe a /metrics endpoint.
+- [ ] **Make it modular**: Use interfaces and DI for swappable storage/index backends, so it's easier to maintain.
+
+### 4. Make It Open-Source Ready
+- [ ] **Docs and examples**: Godoc for API, some tutorials like "Build Your Own Vector App", and diagrams in a docs folder.
+- [ ] **CI/CD and packaging**: GitHub Actions for tests, Docker stuff for easy setup.
+
+### My Plan
+- **Start with**: Fixing startup and speeding up calcs – quick wins.
+- **Track progress**: Use pprof and benchmarks, aim for 10x faster searches.
+- **Learn from**: HNSW papers, "Designing Data-Intensive Apps".
+
+Feel free to suggest or contribute if you're reading this!
+
 ## File Structure
 
 ```
